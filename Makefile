@@ -15,6 +15,7 @@ build: dist $(htmls)
 dist/%.html: posts/%.md
 	markdown $^ > $@.tmp
 	m4 --include=dist/ --define ARTICLE=$@.tmp layout/index.html > $@
+	rm dist/*.tmp
 
 dist:
 	mkdir dist
@@ -22,4 +23,7 @@ dist:
 clean:
 	rm -rf dist
 
-.PHONY: build clean
+new_post:
+	@ ./scripts/new_post.sh
+
+.PHONY: build clean new_post
