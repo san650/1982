@@ -25,7 +25,7 @@ Dependencies
 To create a new post run
 
 ```sh
-$ make new_post TITLE="My awesome post"
+$ make new_post TITLE="My awesome post" AUTHOR="Santiago Ferreira"
 ```
 
 Write your post and then generate the site

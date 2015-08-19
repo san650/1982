@@ -8,12 +8,25 @@ then
   exit 1
 fi
 
+# Helper functions
+
+function cleanup_name()
+{
+  sed 's/[,.]//' \
+    | tr '[A-Z ]' '[a-z-]'
+}
+
 DATE=$( date "+%Y-%m-%d-%H-%M" )
-CLEAN_TITLE=$( echo "$TITLE" | tr '[A-Z ]' '[a-z-]')
+CLEAN_TITLE=$( echo "$TITLE" | cleanup_name )
 TARGET=posts/${DATE}-${CLEAN_TITLE}.md
 
-echo "# $TITLE" > "$TARGET"
-echo >> "$TARGET"
-echo 'Put your content here.' >> "$TARGET"
+echo "---" > "$TARGET"
+
+printf 'title: '"$TITLE"'
+name: '"$AUTHOR"'
+---
+
+Put your content here.
+' >> "$TARGET"
 
 echo "Created $TARGET"

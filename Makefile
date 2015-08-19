@@ -2,7 +2,8 @@
 markdowns=$(wildcard posts/*.md)
 htmls=$(patsubst posts/%.md, dist/%.html, $(markdowns))
 
-build: dist $(htmls)
+build: dist public $(htmls)
+	rm -f dist/*.tmp
 
 # Macros
 # $@ left side of :
@@ -13,12 +14,13 @@ build: dist $(htmls)
 # https://www.gnu.org/software/make/manual/html_node/Wildcard-Function.html
 
 dist/%.html: posts/%.md
-	markdown $^ > $@.tmp
-	m4 --include=dist/ --define ARTICLE=$@.tmp layout/index.html > $@
-	rm dist/*.tmp
+	./scripts/generate_post.sh $^ $@
 
 dist:
-	mkdir dist
+	mkdir -p dist/assets
+
+public: dist
+	cp public/*.css dist/assets/
 
 clean:
 	rm -rf dist
@@ -26,4 +28,4 @@ clean:
 new_post:
 	@ ./scripts/new_post.sh
 
-.PHONY: build clean new_post
+.PHONY: build clean new_post public
