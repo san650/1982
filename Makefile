@@ -2,7 +2,7 @@
 markdowns=$(wildcard posts/*.md)
 htmls=$(patsubst posts/%.md, dist/%.html, $(markdowns))
 
-build: dist public $(htmls)
+build: dist public $(htmls) dist/index.html
 	rm -f dist/*.tmp
 
 # Macros
@@ -21,6 +21,9 @@ dist:
 
 public: dist
 	cp public/*.css dist/assets/
+
+dist/index.html: $(htmls)
+	./scripts/generate_index.sh
 
 clean:
 	rm -rf dist

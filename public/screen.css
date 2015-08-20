@@ -43,7 +43,7 @@ pre {
   padding-left: 10px;
 }
 
-a {
+article a {
   color: rgb(101,122,151);
   border-bottom: 1px dashed rgba(0,0,0,0.1);
   text-decoration: none;
@@ -62,4 +62,25 @@ strong {
 
 aside {
   text-align: right;
+}
+
+/* components */
+.main-nav {
+  padding: 15px 20px 5px;
+  box-shadow: 0 0 1px rgba(0,0,0,0.1);
+}
+
+.main-nav .brand {
+  width: 148px;
+  margin: .075em 0;
+}
+
+.summary article {
+  margin-top: 40px;
+}
+
+.post aside {
+  text-align: left;
+  margin-top: 5px;
+  font-weight: 400;
 }

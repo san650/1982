@@ -20,8 +20,6 @@ function cleanup_markdown()
 
 function get_metadata()
 {
-  local ATTRIBUTE="$1"
-
   sed -n '/^ *'$1':/{; s/^ *'$1': *\(.*\)/\1/; p; q; }' "$SOURCE"
 }
 
@@ -31,6 +29,8 @@ TITLE=$( get_metadata title )
 AUTHOR=$( get_metadata name )
 
 # The magic begins
+
+# Generate a page for the post
 
 cat "$SOURCE" \
   | sed -n '/^---$/,/^---$/!{; p; }' \
@@ -42,4 +42,19 @@ m4 \
   --define ARTICLE="$TMP" \
   --define TITLE="$TITLE" \
   --define AUTHOR="$AUTHOR" \
-  layout/index.html > "$TARGET"
+  layout/post.html > "$TARGET"
+
+# Generate a summary for the post
+
+LINK=$( echo "$TARGET" | sed s/dist\// )
+
+cat "$TMP" \
+  | sed '/<!-- *more *-->/q' > "${TMP}.tmp"
+
+m4 \
+  --include=layout/ \
+  --define ARTICLE="${TMP}.tmp" \
+  --define TITLE="$TITLE" \
+  --define AUTHOR="$AUTHOR" \
+  --define LINK="$LINK" \
+  layout/post_summary.html > "${TARGET}.summary"
