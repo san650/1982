@@ -32,14 +32,14 @@ AUTHOR=$( get_metadata name )
 
 # The magic begins
 
-cat "$SOURCE"                      \
-  | sed -n '/---/,/---/!{; p; }'   \
-  | cleanup_markdown               \
+cat "$SOURCE" \
+  | sed -n '/^---$/,/^---$/!{; p; }' \
+  | cleanup_markdown \
   | markdown > "$TMP"
 
-m4                                 \
-  --include=dist/                  \
-  --define ARTICLE="$TMP"          \
-  --define TITLE="$TITLE"          \
-  --define AUTHOR="$AUTHOR"        \
+m4 \
+  --include=layout/ \
+  --define ARTICLE="$TMP" \
+  --define TITLE="$TITLE" \
+  --define AUTHOR="$AUTHOR" \
   layout/index.html > "$TARGET"
