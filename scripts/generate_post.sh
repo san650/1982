@@ -4,8 +4,8 @@
 
 SOURCE="$1"
 TARGET="$2"
+TARGET_FILENAME=$( basename "$TARGET" )
 TMP="${2}.tmp"
-
 
 # Helper functions
 
@@ -28,12 +28,9 @@ function get_metadata()
 TITLE=$( get_metadata title )
 AUTHOR=$( get_metadata name )
 
-# The magic begins
-
 # Generate a page for the post
 
-cat "$SOURCE" \
-  | sed -n '/^---$/,/^---$/!{; p; }' \
+sed -n '/^---$/,/^---$/!{; p; }' "$SOURCE" \
   | cleanup_markdown \
   | markdown > "$TMP"
 
@@ -46,15 +43,12 @@ m4 \
 
 # Generate a summary for the post
 
-LINK=$( echo "$TARGET" | sed s/dist\// )
-
-cat "$TMP" \
-  | sed '/<!-- *more *-->/q' > "${TMP}.tmp"
+sed '/<!-- *more *-->/q' "$TMP" > "${TMP}.tmp"
 
 m4 \
   --include=layout/ \
   --define ARTICLE="${TMP}.tmp" \
   --define TITLE="$TITLE" \
   --define AUTHOR="$AUTHOR" \
-  --define LINK="$LINK" \
+  --define LINK="$TARGET_FILENAME" \
   layout/post_summary.html > "${TARGET}.summary"
