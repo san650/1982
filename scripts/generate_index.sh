@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-TARGET="dist/post_summaries.tmp"
+TARGET="tmp/post_summaries.html.fragment"
 
 # Overwrite file content
 echo > "$TARGET"
 
-ls -1 dist/*.html.summary \
+ls -1 tmp/*.summary \
   | sort -nr \
   | head -n 10 \
   | xargs cat > "$TARGET"

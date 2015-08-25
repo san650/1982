@@ -1,0 +1,11 @@
+footer {
+  background-color: #4e4e4e;
+  margin-top: 20px;
+  height: 42px;
+  overflow: hidden;
+}
+
+footer img {
+  width: 148px;
+  margin: 12px .7em;
+}

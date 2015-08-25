@@ -5,7 +5,8 @@
 SOURCE="$1"
 TARGET="$2"
 TARGET_FILENAME=$( basename "$TARGET" )
-TMP="${2}.tmp"
+FRAGMENT="tmp/${TARGET_FILENAME}.fragment"
+SUMMARY="tmp/${TARGET_FILENAME}.summary"
 
 # Helper functions
 
@@ -32,23 +33,25 @@ AUTHOR=$( get_metadata name )
 
 sed -n '/^---$/,/^---$/!{; p; }' "$SOURCE" \
   | cleanup_markdown \
-  | markdown > "$TMP"
+  | markdown > "$FRAGMENT"
+
+#  | pandoc -f markdown -t html > "$FRAGMENT"
 
 m4 \
   --include=layout/ \
-  --define ARTICLE="$TMP" \
+  --define ARTICLE="$FRAGMENT" \
   --define TITLE="$TITLE" \
   --define AUTHOR="$AUTHOR" \
   layout/post.html > "$TARGET"
 
 # Generate a summary for the post
 
-sed '/<!-- *more *-->/q' "$TMP" > "${TMP}.tmp"
+sed '/<!-- *more *-->/q' "$FRAGMENT" > "${SUMMARY}.md"
 
 m4 \
   --include=layout/ \
-  --define ARTICLE="${TMP}.tmp" \
+  --define ARTICLE="${SUMMARY}.md" \
   --define TITLE="$TITLE" \
   --define AUTHOR="$AUTHOR" \
   --define LINK="$TARGET_FILENAME" \
-  layout/post_summary.html > "${TARGET}.summary"
+  layout/post_summary.html > "$SUMMARY"
