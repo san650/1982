@@ -32,10 +32,9 @@ AUTHOR=$( get_metadata name )
 # Generate a page for the post
 
 sed -n '/^---$/,/^---$/!{; p; }' "$SOURCE" \
-  | cleanup_markdown \
-  | markdown > "$FRAGMENT"
-
-#  | pandoc -f markdown -t html > "$FRAGMENT"
+  | pandoc -f markdown -t html > "$FRAGMENT"
+#  | cleanup_markdown \
+#  | markdown > "$FRAGMENT"
 
 m4 \
   --include=layout/ \
