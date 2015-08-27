@@ -7,6 +7,7 @@ TARGET="$2"
 TARGET_FILENAME=$( basename "$TARGET" )
 FRAGMENT="tmp/${TARGET_FILENAME}.fragment"
 SUMMARY="tmp/${TARGET_FILENAME}.summary"
+ARCHIVE="tmp/${TARGET_FILENAME}.archive"
 
 # Helper functions
 
@@ -54,3 +55,15 @@ m4 \
   --define AUTHOR="$AUTHOR" \
   --define LINK="$TARGET_FILENAME" \
   layout/post_summary.html > "$SUMMARY"
+
+# Generate archive fragment
+
+DATE=$( echo "$TARGET_FILENAME" | cut -c 1-10 )
+
+m4 \
+  --include=layout/ \
+  --define TITLE="$TITLE" \
+  --define LINK="$TARGET_FILENAME" \
+  --define DATE="$DATE" \
+  --define AUTHOR="$AUTHOR" \
+  layout/archive_fragment.html > "$ARCHIVE"

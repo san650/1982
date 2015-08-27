@@ -5,13 +5,13 @@ assets=$(patsubst public/%, dist/assets/%, $(wildcard public/*))
 
 # Commands
 
-build: dist dist/assets/screen.css $(assets) $(htmls) dist/index.html
+build: dist dist/assets/screen.css $(assets) $(htmls) dist/index.html dist/archive.html
 
 clean:
 	rm -rf dist tmp
 
 new_post:
-	@ ./scripts/new_post.sh
+	@./scripts/new_post.sh
 
 help:
 	@echo "$$BANNER" | column -xts'-'
@@ -32,6 +32,9 @@ dist/assets/%: public/%
 
 dist/index.html: $(htmls)
 	./scripts/generate_index.sh
+
+dist/archive.html: $(htmls)
+	./scripts/generate_archive.sh
 
 dist/assets/screen.css: $(wildcard styles/*.css)
 	m4 --include=styles/ styles/screen.css > dist/assets/screen.css
